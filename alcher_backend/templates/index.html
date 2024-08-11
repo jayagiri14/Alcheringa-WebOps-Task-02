@@ -238,7 +238,9 @@ async function main() {
         var email = temp[2];
 
         const dataList = [fullname, username, email];
-
+        
+/*IMPORTANT IMPLEMENT THE BELOW POST REQUEST ONCE AND ONLY ONCE TO FETCH DATA FROM THE API AND UPLOAD IT TO THE DATABASE */
+        
         fetch('/post-data/', {
                 // method: 'POST',      //implement this once to fetch the data from api and store it in the table
                 headers: {
