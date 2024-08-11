@@ -1,0 +1,453 @@
+<!DOCTYPE html >
+<html lang="en" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <script>
+        const editIconUrl = "{% static 'edit.svg' %}";
+        const deleteIconUrl = "{% static 'delete.svg' %}";
+        const close = "{% static 'static/close.svg' %}";
+    </script>
+    <!-- <script src="{% static 'script.js'%}"></script> -->
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+
+<body >
+    <div id="overlay">
+        <header>
+            <div class="home">
+                <img class="invert" src="{% static 'home.svg'%}" alt="">
+                <span>Home</span>
+            </div>
+            <div class="profile">
+                <div class="circle"><img style="width:36px;height: 45px;" src="{% static 'profile.jpg'%}" alt=""></div>
+
+                <span class="name">G Jayagiri</span>
+            </div>
+
+
+        </header>
+        <container class="main" >
+            <div class="sidebar">
+                <!-- <div class="cancel">
+                    <img src="{% static 'close.svg'%}" alt="">
+                </div> -->
+                
+                <div class="add">
+                    <div class="addbox">
+                        <img src="{% static 'plus.svg'%}" alt="">
+                        <h1>New Item</h1>
+                    </div>
+
+                </div>
+                <div class="dash">
+                    <div class="dashbutton">
+                        <span>
+                            <img style="margin-right: 6px;" src="{% static 'dashboard.svg'%}" alt="">
+                            Dashboard</span>
+                        <img src="{% static 'downarrow.svg'%}" alt="">
+                    </div>
+                    <ul class="dashele">
+                        <li>Commarce</li>
+                        <li>Analytics</li>
+                        <li>Crypto</li>
+                        <li>Helpdesk</li>
+                        <li>Monitoring</li>
+                        <li>Fitness</li>
+                    </ul>
+                </div>
+                <div class="dash">
+                    <div class="dashbutton">
+                        <span>
+                            <img style="margin-right: 6px;" src="{% static 'dashboard.svg'%}" alt="">
+                            Application</span>
+                        <img src="{% static 'downarrow.svg'%}" alt="">
+                    </div>
+                    <ul class="dashele">
+                        <li>Commarce</li>
+                        <li>Analytics</li>
+                        <li>Crypto</li>
+                        <li>Helpdesk</li>
+                        <li>Monitoring</li>
+                        <li>Fitness</li>
+                    </ul>
+                </div>
+                <div class="dash">
+                    <div class="dashbutton">
+                        <span>
+                            <img style="margin-right: 6px;" src="{% static 'dashboard.svg'%}" alt="">
+                            Elements</span>
+                        <img src="{% static 'downarrow.svg'%}" alt="">
+                    </div>
+                    <ul class="dashele">
+                        <li>Commarce</li>
+                        <li>Analytics</li>
+                        <li>Crypto</li>
+                        <li>Helpdesk</li>
+                        <li>Monitoring</li>
+                        <li>Fitness</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="rightmain">
+                <div class="filler">
+                    <div class="welcome">
+                        <span style="font-size: 30px;font-weight: 470;">
+                            Welcome
+                        </span>
+                        <div class="intro">
+                            <div class="photo">
+
+                            </div>
+                            <span style="font-size: 30px;margin-left: 15px;font-weight: 470;">Username</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rightbot">
+                    <h2>Form title</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, suscipit?</p>
+                </div>
+                <div class="caution">
+                    <img src="{% static 'info.svg'%}" alt="">
+                    <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, fugit.</span>
+                </div>
+                <div class="tables">
+                    <table class="table">
+                        <tr>
+                            <th>Fullname</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>modify</th>
+
+                    </table>
+                </div>
+                <div class="adduser">  
+                    <img style="height:20px; color:white"src="{% static 'smallplus.svg'%}" alt="">
+                    <span>
+                        Add User
+                    </span>
+                </div>
+                <div class="card">
+                   <h1>Add Member</h1>
+                   <h2>Fullname</h2>
+                   <input type="text" class="fullname" placeholder="Enter fullname">
+                   <h2>Username</h2>
+                   <input type="text" class="username" placeholder="Enter username">
+                   <h2>Email</h2>
+                   <input type="text" class="email" placeholder="Enter email">
+                   
+                    <div class="buttons">
+                        <button style="background-color: #1a84e5;"class="cancelcard">
+                            Cancel
+                        </button>
+                        <button style="background-color: #d88e05;"class="confirm">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </container>
+    </div>
+</body>
+<script>
+    const csrfToken = '{{ csrf_token }}';
+</script>
+<script>
+    //function for fetching the data from the api link
+async function extractor() {
+    let a = [];
+    let b = await fetch("https://dummyjson.com/users")
+    let c = await b.json();
+    let user = c.users;
+    for (const ele of user) {
+        let temp = [];
+        let name = ele.firstName + ' ' + ele.lastName;
+        let usrn = ele.username;
+        let mail = ele.email;
+        temp.push(name)
+        temp.push(usrn)
+        temp.push(mail)
+        a.push(temp)
+    }
+    return a
+}
+
+
+async function main() {
+    let data = await extractor();
+    //done this is to get the info whether it is mobile view or desktop view
+    const checker = getComputedStyle(document.documentElement);
+    const a = checker.getPropertyValue('--a');//a=1 for desktop;  a=0 for mobile
+
+    let sidebar = document.querySelector(".sidebar")
+    if (a == 1) {
+        document.querySelector('.sidebar').classList.toggle('open')
+        document.querySelector(".rightmain").style.position = "absolute"
+    }
+
+    //creating cancel button 
+    let cancel = document.createElement("div")
+    cancel.innerHTML = `<div class="cancel">
+        <img src="{% static 'close.svg'%}" alt="">
+    </div>`
+
+
+
+
+    //home button click brings the sidebar
+    document.querySelector(".home").addEventListener("click", () => {
+        document.querySelector('.sidebar').classList.toggle('open')
+        if (a == 0) {
+            sidebar.style.width = "75vw"
+        }
+        if (a == 1) {
+            document.querySelector(".rightmain").style.position = "absolute"
+        }
+
+    })
+
+
+    //adding the cancel button functionality
+    sidebar.insertBefore(cancel, sidebar.children[0]);
+    document.querySelector(".cancel").addEventListener("click", () => {
+        document.querySelector(".rightmain").style.position = "inherit"
+        document.querySelector('.sidebar').classList.toggle('open');
+
+        //modifying the cancel functionality according to viewtype
+
+        if (a == 1) {
+            document.querySelector(".rightmain").style.position = "static"
+        }
+
+    })
+
+
+
+
+    //adding data from api into the table
+    for (const temp of data) {
+
+        var fullname = temp[0];
+        var username = temp[1];
+        var email = temp[2];
+
+        const dataList = [fullname, username, email];
+
+        fetch('/post-data/', {
+                // method: 'POST',      //implement this once to fetch the data from api and store it in the table
+                headers: {
+                    'Content-Type': 'application/json',
+                    
+                },
+                body: JSON.stringify(dataList)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error));
+
+            
+        
+      
+
+ 
+    }
+
+
+
+    fetch('/getlocaldata/')
+                .then(response => response.json())
+                .then(details => {
+                    // console.log(details)
+                    for (let index = 0; index < details.length; index++) {
+                        const element = details[index];
+                   
+                             let row = document.createElement("tr")
+            
+            
+                    row.innerHTML = `
+                    {% load static %}
+
+                    
+                    <td>${element['name']}</td>
+                    <td>${element['username']}</td>
+                    <td>${element['email']}</td>
+                    <td class="modify">
+                        <button  class="edit">
+                            <img src="${editIconUrl}" alt="">
+                            <span class="text">edit</span>
+                        </button>
+                        <button  class="del">
+                            <img src="${deleteIconUrl}" alt="">
+                            <span class="text">Delete</span>
+                        </button>
+                    </td>`
+                    document.querySelector("table").appendChild(row);
+
+                       
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+
+    //creating a new row
+    let create = document.querySelector(".addbox");
+    create.addEventListener("click", () => {
+        let newcell = document.createElement("tr")
+        newcell.innerHTML = `
+
+        <td>Enter something</td>
+        <td>Enter something</td>
+        <td>Enter something </td>
+        <td class="modify">
+            <button  class="edit">
+                <img src="{% static 'edit.svg'%}" alt="">
+                <span class="text">edit</span>
+            </button>
+            <button  class="del">
+                <img src="{% static 'delete.svg'%}" alt="">
+                <span class="text">Delete</span>
+            </button>
+        </td>`
+        document.querySelector(".table").appendChild(newcell)
+
+        var flag = 0;
+        document.querySelectorAll(".edit").forEach((item) => {
+            item.addEventListener("click", () => {
+               
+                if (flag == 0) {
+
+
+                    for (let i = 0; i < 3; i++) {
+                        var cellcontent = items[i].innerHTML;
+
+                        items[i].innerHTML = `<input type='text' value="${cellcontent}">`;
+                    }
+                    item.innerHTML = ` <img src="{% static 'edit.svg'%}" alt="">
+                    <span class="text">Save</span>`
+                    flag++;
+                }
+                else {
+
+                    for (var i = 0; i < items.length - 1; i++) {
+                        var cell = items[i];
+                        var input = cell.getElementsByTagName('input')[0];
+                        cell.innerHTML = input.value;
+                        flag = 0;
+                        item.innerHTML = ` <img src="{% static 'edit.svg'%}" alt="">
+                    <span class="text">edit</span>`
+                    }
+                }
+
+
+            })
+        })
+
+
+        //delete functionality for the table
+        document.querySelectorAll(".del").forEach((item) => {
+            item.addEventListener("click", () => {
+                alert("are you sure you want to delete?")
+                var tr = item.parentElement.parentElement
+                tr.remove()
+            })
+        })
+
+    })
+
+    //edit functionality for the table
+    var flag = 0;
+    document.querySelectorAll(".edit").forEach((item) => {
+    
+        item.addEventListener("click", () => {
+            console.log("hello")
+            let items = item.parentElement.parentElement.children;
+            if (flag == 0) {
+
+
+                for (let i = 0; i < 3; i++) {
+                    var cellcontent = items[i].innerHTML;
+
+                    items[i].innerHTML = `<input type='text' value="${cellcontent}">`;
+                }
+                item.innerHTML = `<img src="{% static 'edit.svg'%}" alt="">
+                <span class="text">Save</span>`
+                flag++;
+            
+            
+    
+        }
+            else {
+
+                for (var i = 0; i < items.length - 1; i++) {
+                    var cell = items[i];
+                    var input = cell.getElementsByTagName('input')[0];
+                    cell.innerHTML = input.value;
+                    flag = 0;
+                    item.innerHTML = ` <img src="{% static 'edit.svg'%}" alt="">
+                <span class="text">edit</span>`
+                }
+            }
+
+
+        })
+    })
+
+
+    //delete functionality for the table
+    document.querySelectorAll(".del").forEach((item) => {
+        item.addEventListener("click", () => {
+            alert("are you sure you want to delete?")
+            var tr = item.parentElement.parentElement
+            tr.remove()
+        })
+    })
+
+
+
+    //add new button functionality
+    document.querySelector(".adduser").addEventListener("click",() => { 
+        document.querySelector(".card").style.display="block"
+      
+     })
+
+    //confirm button
+    document.querySelector(".confirm").addEventListener("click",() => { 
+        document.querySelector(".card").style.display="none"
+          //yet to write a post method here 
+        let fullname=document.querySelector(".fullname").value
+        let username=document.querySelector(".username").value
+        let email=document.querySelector(".email").value
+        const newdetails=[fullname,username,email]
+        fetch('/postaddnew/', {
+                method: 'POST',     
+                headers: {
+                    'Content-Type': 'application/json',
+                    
+                },
+                body: JSON.stringify(newdetails)
+            })
+            .then(response => response.json())
+            .then(data => {console.log('Success:', data)
+                alert('Data saved sucessfully,please reload to see the changes')
+    })
+            .catch(error => {console.error('Error:', error)
+            alert('some error occurred ,please try again')
+            });
+
+            
+
+     })
+    document.querySelector(".cancelcard").addEventListener("click",() => { 
+        document.querySelector(".card").style.display="none"
+        
+
+     })
+}
+main()
+</script>
+</html>
